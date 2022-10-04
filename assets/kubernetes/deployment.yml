@@ -1,0 +1,43 @@
+﻿apiVersion: v1
+kind: Namespace
+metadata:
+  name: loaderio
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: loaderio
+  name: loaderio
+  namespace: loaderio
+spec:
+  ports:
+  - port: 80
+    name: http
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: loaderio
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: loaderio
+  name: loaderio
+  namespace: loaderio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loaderio
+  template:
+    metadata:
+      labels:
+        app: loaderio
+    spec:
+      containers:
+      - image: zimbres/loaderio-verificator
+        name: loaderio
+        ports:
+        - containerPort: 80
